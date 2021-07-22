@@ -20,17 +20,16 @@ podTemplate(yaml: '''
                   args:
                   - 99d
                   volumeMounts:
-                    - name: jenkins-docker-cfg
-                      mountPath: /kaniko/.docker
+                  - name: gcp-sa-secret
+                    mountPath: /secret
+                  env:
+                  - name: GOOGLE_APPLICATION_CREDENTIALS
+                    value: /secret/rak-card-dev-92cb5b0e01ea.json
+                restartPolicy: Never
                 volumes:
-                - name: jenkins-docker-cfg
-                  projected:
-                    sources:
-                    - secret:
-                        name: regcred
-                        items:
-                          - key: .dockerconfigjson
-                            path: config.json
+                - name: gcp-sa-secret
+                  secret:
+                    secretName: gcp-sa-secret
 '''
   ) {
 
